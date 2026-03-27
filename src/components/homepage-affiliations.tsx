@@ -1,23 +1,29 @@
+import { ArrowUpRight } from 'lucide-react'
+
 const memberOfItems = [
   {
     name: 'ÍSÍ',
-    subtitle: 'KRAFT er hluti af',
+    subtitle: 'Íþróttasamband Íslands',
     image: '/isi_logo.png',
+    href: 'https://isi.is/',
   },
   {
     name: 'IPF',
     subtitle: 'International Powerlifting Federation',
     image: '/ipf_logo.jpg',
+    href: 'https://www.powerlifting.sport/',
   },
   {
     name: 'EPF',
     subtitle: 'European Powerlifting Federation',
     image: '/epf_logo.png',
+    href: 'https://www.europowerlifting.org/',
   },
   {
     name: 'NPF',
     subtitle: 'Nordic Powerlifting Federation',
     image: '/npf_logo.gif',
+    href: 'https://npfpower.wordpress.com/',
   },
 ]
 
@@ -26,6 +32,7 @@ const partnerItems = [
     name: 'Atlas Endurhæfing',
     subtitle: 'Samstarfsaðili',
     image: '/atlas.png',
+    href: 'https://atlasendurhaefing.is/',
   },
 ]
 
@@ -34,16 +41,19 @@ const policyItems = [
     name: 'Kynferðisleg áreitni og ofbeldi',
     subtitle: 'Viðmið og vernd innan íþróttastarfs',
     image: '/sexual_assault_iamge.png',
+    href: 'https://isi.is/fraedsla/kynferdisleg-areitni-og-ofbeldi/',
   },
   {
     name: 'Samskiptaráðgjafi íþrótta- og æskulýðsstarfs',
     subtitle: 'Stuðningur og ráðgjöf',
     image: '/sports_youthwork_image.png',
+    href: 'https://www.samskiptaradgjafi.is/',
   },
   {
     name: 'Viðbragðsáætlun',
     subtitle: 'Ferli og viðbrögð',
     image: '/contingency_plan_image.png',
+    href: 'https://www.samskiptaradgjafi.is/verkfaerakista',
   },
 ]
 
@@ -51,6 +61,7 @@ type LogoCardProps = {
   image: string
   name: string
   subtitle: string
+  href?: string
   imageClassName?: string
 }
 
@@ -58,9 +69,10 @@ function LogoCard({
   image,
   name,
   subtitle,
+  href,
   imageClassName = 'h-20 sm:h-24 lg:h-28',
 }: LogoCardProps) {
-  return (
+  const card = (
     <article className="group rounded-[2rem] border border-black/6 bg-white px-6 py-7 shadow-[0_20px_60px_-45px_rgba(15,23,42,0.45)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_70px_-42px_rgba(15,23,42,0.5)]">
       <div className="flex min-h-[7rem] items-center justify-center">
         <img
@@ -73,8 +85,29 @@ function LogoCard({
       <div className="mt-5 text-center">
         <h3 className="text-lg font-semibold text-slate-950">{name}</h3>
         <p className="mt-1 text-sm leading-6 text-slate-600">{subtitle}</p>
+        {href ? (
+          <p className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#d63d2a]">
+            Opna vef
+            <ArrowUpRight className="size-4" />
+          </p>
+        ) : null}
       </div>
     </article>
+  )
+
+  if (!href) {
+    return card
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="block rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d63d2a]/35"
+    >
+      {card}
+    </a>
   )
 }
 
@@ -122,6 +155,7 @@ export function HomepageAffiliations() {
                   image={item.image}
                   name={item.name}
                   subtitle={item.subtitle}
+                  href={item.href}
                 />
               ))}
             </div>
@@ -151,6 +185,7 @@ export function HomepageAffiliations() {
                   image={item.image}
                   name={item.name}
                   subtitle={item.subtitle}
+                  href={item.href}
                   imageClassName="h-24 sm:h-28 lg:h-32"
                 />
               ))}
@@ -176,27 +211,14 @@ export function HomepageAffiliations() {
 
             <div className="mt-8 grid gap-5 lg:grid-cols-3">
               {policyItems.map((item) => (
-                <article
+                <LogoCard
                   key={item.name}
-                  className="overflow-hidden rounded-[2rem] border border-black/6 bg-white shadow-[0_20px_60px_-45px_rgba(15,23,42,0.45)] transition-transform duration-300 hover:-translate-y-1"
-                >
-                  <div className="flex min-h-[16rem] items-center justify-center bg-[#f7f4ef] p-4">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="h-auto max-h-56 w-full max-w-[22rem] object-contain"
-                    />
-                  </div>
-
-                  <div className="border-t border-black/6 px-6 py-5">
-                    <h4 className="text-lg font-semibold text-slate-950">
-                      {item.name}
-                    </h4>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">
-                      {item.subtitle}
-                    </p>
-                  </div>
-                </article>
+                  image={item.image}
+                  name={item.name}
+                  subtitle={item.subtitle}
+                  href={item.href}
+                  imageClassName="h-auto max-h-56 w-full max-w-[22rem]"
+                />
               ))}
             </div>
           </section>
