@@ -1,8 +1,14 @@
+import { AchievementsPage } from './components/achievements-page'
+import { DonationPage } from './components/donation-page'
 import { Footer } from './components/footer'
 import { HomepageAffiliations } from './components/homepage-affiliations'
 import { Navbar } from './components/navbar'
 
 export default function App() {
+  const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
+  const isDonationPage = pathname === '/styrkja-kraft'
+  const isAchievementsPage = pathname === '/afreksmal'
+
   return (
     <div
       id="top"
@@ -10,7 +16,13 @@ export default function App() {
     >
       <Navbar />
       <main className="flex-1">
-        <HomepageAffiliations />
+        {isDonationPage ? (
+          <DonationPage />
+        ) : isAchievementsPage ? (
+          <AchievementsPage />
+        ) : (
+          <HomepageAffiliations />
+        )}
       </main>
       <Footer />
     </div>
