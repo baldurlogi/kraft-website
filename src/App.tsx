@@ -1,7 +1,9 @@
+import { Navbar } from './components/navbar'
+
 export default function App() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
-      <h1 className="text-4xl font-bold">My website is working</h1>
+    <div className="min-h-screen bg-[linear-gradient(180deg,#f8f5ef_0%,#f3efe7_100%)] text-slate-950">
+      <Navbar />
     </div>
   )
 }
