@@ -1,12 +1,8 @@
 import {
   ArrowUp,
   ArrowUpRight,
-  Camera,
-  CirclePlay,
-  Images,
   Mail,
   MapPin,
-  MessagesSquare,
   ScanText,
 } from 'lucide-react'
 
@@ -72,26 +68,22 @@ const socialLinks = [
   {
     label: 'Instagram',
     href: 'https://www.instagram.com/kraftlyftingasamband_island',
-    icon: Camera,
-    accent: 'from-[#f2447d] to-[#b61ef1]',
+    image: '/instagram.png',
   },
   {
     label: 'YouTube',
     href: 'https://www.youtube.com/user/krafticeland',
-    icon: CirclePlay,
-    accent: 'from-[#ff5130] to-[#ff1f1f]',
+    image: '/Youtube_logo.png',
   },
   {
     label: 'Facebook',
     href: 'https://www.facebook.com/KRAFTIS/',
-    icon: MessagesSquare,
-    accent: 'from-[#3d7cff] to-[#2655e8]',
+    image: '/facebook_logo.png',
   },
   {
     label: 'Flickr',
     href: 'https://www.flickr.com/photos/kraft2010/',
-    icon: Images,
-    accent: 'from-[#4f7cff] to-[#244fe1]',
+    image: '/flickr_logo.png',
   },
 ]
 
@@ -236,8 +228,6 @@ export function Footer() {
         <div className="mt-14 border-t border-white/10 pt-10">
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {socialLinks.map((item) => {
-              const Icon = item.icon
-
               return (
                 <a
                   key={item.label}
@@ -246,10 +236,12 @@ export function Footer() {
                   rel="noreferrer"
                   className="group flex items-center gap-4 rounded-[1.75rem] border border-white/10 bg-white/6 px-5 py-4 transition-all duration-200 hover:-translate-y-1 hover:bg-white/10"
                 >
-                  <div
-                    className={`flex size-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${item.accent} shadow-[0_20px_40px_-24px_rgba(0,0,0,0.9)]`}
-                  >
-                    <Icon className="size-6" />
+                  <div className="flex h-14 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/0">
+                    <img
+                      src={item.image}
+                      alt={`${item.label} logo`}
+                      className="max-h-10 w-auto max-w-full object-contain"
+                    />
                   </div>
 
                   <div className="min-w-0">
