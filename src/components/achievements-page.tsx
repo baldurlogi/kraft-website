@@ -458,11 +458,6 @@ export function AchievementsPage() {
                 Árangur eftir árum
               </h2>
             </div>
-            <p className="max-w-2xl text-sm leading-7 text-white/68 sm:text-base">
-              Árgangarnir eru birtir í einu sjónsviði í stað þess að láta
-              notandann skrolla í gegnum endalausan tenglalista. Veldu ár og fáðu
-              yfirsýn strax.
-            </p>
           </div>
 
           <div className="mt-8 flex gap-3 overflow-x-auto pb-2">
@@ -491,11 +486,6 @@ export function AchievementsPage() {
               <h3 className="mt-3 text-4xl font-semibold">{activeYear.year}</h3>
               <p className="mt-3 text-sm leading-7 text-white/68">
                 Skráð mót á þessu ári: {activeYear.events.length}
-              </p>
-              <p className="mt-4 text-sm leading-7 text-white/68">
-                Þegar við bætum við raunverulegum tenglum getur þessi sami
-                strúktúr orðið að öflugri niðurstöðusíðu án þess að breyta
-                upplifuninni.
               </p>
             </div>
 

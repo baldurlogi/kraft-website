@@ -17,10 +17,24 @@ import {
 } from './ui/sheet'
 
 const navItems = [
-  { label: 'Um KRAFT', href: '/um-kraft', expandable: true },
-  { label: 'Mót', href: '/mot', expandable: true },
-  { label: 'Fræðsla', href: '/fraedsla', expandable: true },
-  { label: 'Afreksmál', href: '/afreksmal', expandable: true },
+  {
+    label: 'Um KRAFT',
+    href: '/um-kraft',
+    children: [
+      { label: 'Yfirlit', href: '/um-kraft' },
+      {
+        label: 'Heiðursviðurkenningar',
+        href: '/um-kraft/heidursvidurkenningar',
+      },
+      {
+        label: 'Kraftlyftingafólk ársins',
+        href: '/um-kraft/kraftlyftingafolk_arsins',
+      },
+    ],
+  },
+  { label: 'Mót', href: '/mot' },
+  { label: 'Fræðsla', href: '/fraedsla' },
+  { label: 'Afreksmál', href: '/afreksmal' },
 ]
 
 function BrandLogo({ mobile = false }: { mobile?: boolean }) {
@@ -34,6 +48,18 @@ function BrandLogo({ mobile = false }: { mobile?: boolean }) {
 }
 
 export function Navbar() {
+  const pathname = window.location.pathname.replace(/\/+$/, '') || '/'
+
+  const isCurrentPath = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`)
+
+  const isCurrentNavItem = (
+    item: (typeof navItems)[number],
+  ) =>
+    isCurrentPath(item.href) ||
+    item.children?.some((child) => isCurrentPath(child.href)) ||
+    (item.label === 'Um KRAFT' && pathname === '/kraftlyftingafolk_arsins')
+
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-white/75 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70">
       <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-3 sm:gap-3 sm:px-6 lg:px-8">
@@ -59,19 +85,44 @@ export function Navbar() {
           aria-label="Aðalvalmynd"
         >
           {navItems.map((item) => (
-            <Button
-              key={item.label}
-              asChild
-              variant="ghost"
-              className="h-11 rounded-full px-4 text-[0.98rem] font-medium text-slate-700"
-            >
-              <a href={item.href}>
-                {item.label}
-                {item.expandable ? (
-                  <ChevronDown className="size-4 opacity-70" />
-                ) : null}
-              </a>
-            </Button>
+            <div key={item.label} className="group relative">
+              <Button
+                asChild
+                variant="ghost"
+                className={`h-11 rounded-full px-4 text-[0.98rem] font-medium ${
+                  isCurrentNavItem(item)
+                    ? 'bg-[#f8f5ef] text-[#b73724]'
+                    : 'text-slate-700'
+                }`}
+              >
+                <a href={item.href}>
+                  {item.label}
+                  {item.children ? (
+                    <ChevronDown className="size-4 opacity-70 transition-transform duration-200 group-hover:rotate-180" />
+                  ) : null}
+                </a>
+              </Button>
+
+              {item.children ? (
+                <div className="pointer-events-none absolute left-0 top-full pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+                  <div className="min-w-[18rem] rounded-[1.75rem] border border-black/6 bg-white p-3 shadow-[0_22px_80px_-52px_rgba(15,23,42,0.45)]">
+                    {item.children.map((child) => (
+                      <a
+                        key={child.href}
+                        href={child.href}
+                        className={`flex items-center rounded-2xl px-4 py-3 text-sm font-medium transition-colors ${
+                          isCurrentPath(child.href)
+                            ? 'bg-[#f8f5ef] text-[#b73724]'
+                            : 'text-slate-700 hover:bg-[#f8f5ef] hover:text-slate-950'
+                        }`}
+                      >
+                        {child.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
           ))}
         </nav>
 
@@ -135,15 +186,45 @@ export function Navbar() {
 
               <nav className="flex flex-col gap-2" aria-label="Farsímavalmynd">
                 {navItems.map((item) => (
-                  <SheetClose key={item.label} asChild>
-                    <a
-                      href={item.href}
-                      className="flex items-center justify-between rounded-2xl border border-transparent bg-white/70 px-4 py-3.5 text-base font-medium text-slate-900 transition-colors hover:border-slate-200 hover:bg-white"
-                    >
-                      <span>{item.label}</span>
-                      <ChevronDown className="size-4 text-slate-500" />
-                    </a>
-                  </SheetClose>
+                  <div
+                    key={item.label}
+                    className="rounded-[1.75rem] border border-black/6 bg-white/70 p-2"
+                  >
+                    <SheetClose asChild>
+                      <a
+                        href={item.href}
+                        className={`flex items-center justify-between rounded-2xl px-4 py-3 text-base font-medium transition-colors ${
+                          isCurrentNavItem(item)
+                            ? 'bg-[#f8f5ef] text-[#b73724]'
+                            : 'text-slate-900 hover:bg-white'
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        {item.children ? (
+                          <ChevronDown className="size-4 text-slate-500" />
+                        ) : null}
+                      </a>
+                    </SheetClose>
+
+                    {item.children ? (
+                      <div className="mt-1 space-y-1 px-2 pb-2">
+                        {item.children.map((child) => (
+                          <SheetClose key={child.href} asChild>
+                            <a
+                              href={child.href}
+                              className={`block rounded-2xl px-4 py-2.5 text-sm font-medium transition-colors ${
+                                isCurrentPath(child.href)
+                                  ? 'bg-[#f8f5ef] text-[#b73724]'
+                                  : 'text-slate-600 hover:bg-white hover:text-slate-950'
+                              }`}
+                            >
+                              {child.label}
+                            </a>
+                          </SheetClose>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
                 ))}
               </nav>
 
